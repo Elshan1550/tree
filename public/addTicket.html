@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Management System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Ticket Entry Form</h1>
+        <form id="ticketForm">
+            <label for="barcode">Barcode:</label>
+            <input type="text" id="barcode" name="barcode" required>
+            <label for="category">Category:</label>
+            <input type="text" id="category" name="category" required>
+            <input type="submit" value="Submit Ticket">
+        </form>
+        <div id="message" style="color: red; margin-top: 20px;"></div>
+    </div>
+
+    <script>
+        document.getElementById('ticketForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const barcode = document.getElementById('barcode').value;
+            const category = document.getElementById('category').value;
+
+            fetch('/tickets', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ barcode, category })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        document.getElementById('message').textContent = data.message;
+                    } else {
+                        alert('Ticket added successfully!');
+                        document.getElementById('ticketForm').reset();
+                        document.getElementById('message').textContent = '';
+                    }
+                })
+                .catch(error => {
+                    console.log('Error adding ticket:', error);
+                    document.getElementById('message').textContent = 'Failed to add ticket.';
+                });
+        });
+    </script>
+</body>
+
+</html>
