@@ -1,277 +1,293 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Scan Barcode</title>
     <style>
-        /* Reset body styles */
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            overflow: hidden;
-        }
+      /* Reset body styles */
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        overflow: hidden;
+      }
 
-        /* Background video styles */
-        #backgroundVideo {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -1;
-        }
+      /* Background video styles */
+      #backgroundVideo {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1;
+      }
 
-        /* Main content container */
-        .container {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 20vh;
-            left: -80vh;
-            text-align: center;
-            color: rgb(190, 23, 23);
-            z-index: 1;
-            position: relative;
-        }
+      /* Main content container */
+      .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 20vh;
+        left: -80vh;
+        text-align: center;
+        color: rgb(190, 23, 23);
+        z-index: 1;
+        position: relative;
+      }
 
-        #barcodeInput {
-            padding: 5px;
-            font-size: 0.4rem;
-            border-radius: 1px;
-            border: none;
-            outline: none;
-            background-color: rgba(10, 82, 3, 0.541);
-            color: rgb(255, 255, 255);
-            width: 50%;
-            max-width: 100px;
-            margin-bottom: 20px;
-        }
+      #barcodeInput {
+        padding: 5px;
+        font-size: 0.4rem;
+        border-radius: 1px;
+        border: none;
+        outline: none;
+        background-color: rgba(10, 82, 3, 0.541);
+        color: rgb(255, 255, 255);
+        width: 50%;
+        max-width: 100px;
+        margin-bottom: 20px;
+      }
 
-        button {
-            padding: 5px 5px;
-            font-size: 0.5rem;
-            color: white;
-            background-color: #051b00;
-            border: none;
-            border-radius: 5px;
-            margin: 0px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
+      button {
+        padding: 5px 5px;
+        font-size: 0.5rem;
+        color: white;
+        background-color: #051b00;
+        border: none;
+        border-radius: 5px;
+        margin: 0px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
 
-        button:hover {
-            background-color: #778a0f;
-        }
+      button:hover {
+        background-color: #778a0f;
+      }
 
-        /* Action video styling */
-        video.action-video {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            background-color: black;
-            z-index: 2;
-        }
+      /* Action video styling */
+      video.action-video {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        background-color: black;
+        z-index: 2;
+      }
 
-        /* Unregistered ticket message */
-        #unregisteredMessage {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 20px;
-            font-size: 1.5rem;
-            font-weight: bold;
-            text-align: center;
-            border-radius: 10px;
-            z-index: 3;
-        }
+      /* Unregistered ticket message */
+      #unregisteredMessage {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 20px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-align: center;
+        border-radius: 10px;
+        z-index: 3;
+      }
 
-        #manual-input-container {
-            width: 300px;
-            height: 60px;
-            position: fixed;
-            display: block;
-            bottom: 5px;
-            right: -80px;
-        }
+      #manual-input-container {
+        width: 300px;
+        height: 60px;
+        position: fixed;
+        display: block;
+        bottom: 5px;
+        right: -80px;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <!-- Background video -->
     <video id="backgroundVideo" autoplay muted loop>
-        <source src="/videos/background_video.mp4" type="video/mp4">
-        Your browser does not support the video tag.
+      <source src="/videos/background_video.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
     </video>
 
     <!-- Main content -->
     <div>
+      <!-- Action videos -->
+      <video id="welcomeVideo" class="action-video">
+        <source src="/videos/welcome_video.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+      <video id="welcomeBackVideo" class="action-video">
+        <source src="/videos/welcome_video.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+      <video id="thankYouVideo" class="action-video">
+        <source src="/videos/thank_you_video.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
 
-        <!-- Action videos -->
-        <video id="welcomeVideo" class="action-video">
-            <source src="/videos/welcome_video.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-        <video id="welcomeBackVideo" class="action-video">
-            <source src="/videos/welcome_video.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-        <video id="thankYouVideo" class="action-video">
-            <source src="/videos/thank_you_video.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-
-        <!-- mannual Qr input -->
-        <div id="manual-input-container">
-            <input type="text" id="barcodeInput" placeholder="Scan barcode" autofocus>
-            <button onclick="submitCode()">Submit Manually</button>
-        </div>
+      <!-- mannual Qr input -->
+      <div id="manual-input-container">
+        <input
+          type="text"
+          id="barcodeInput"
+          placeholder="Scan barcode"
+          autofocus
+        />
+        <button onclick="submitCode()">Submit Manually</button>
+      </div>
     </div>
 
     <!-- Unregistered ticket message -->
-    <div id="unregisteredMessage">Ticket Not Found! Please wait for Assistant.</div>
+    <div id="unregisteredMessage">
+      Ticket Not Found! Please wait for Assistant.
+    </div>
 
+    <script src="./cache.js"></script>
     <script>
-        let isScanningAllowed = true;
-        const playSound = (() => {
-            const sounds = {
-                success: new Audio('/sounds/ok.mp3'),
-                fail: new Audio('/sounds/error.mp3')
-            };
+      let isScanningAllowed = true;
+      const barcodeIn = document.getElementById("barcodeInput");
+      const playSound = (() => {
+        const sounds = {
+          success: new Audio("/sounds/ok.mp3"),
+          fail: new Audio("/sounds/error.mp3"),
+        };
 
-            // Pre-load sounds
-            for (const sound of Object.values(sounds)) {
-                sound.load();
-            }
-
-            return (type) => {
-                const sound = sounds[type];
-                if (sound) {
-                    sound.currentTime = 0;
-                    sound.play().catch(err => console.warn('Sound play failed:', err));
-                }
-            };
-        })();
-
-
-        function processCode(code) {
-            if (!isScanningAllowed || !code) return;
-
-            updateTicketStatus(code);
-
-            isScanningAllowed = false;
-            setTimeout(() => {
-                isScanningAllowed = true;
-            }, 3000);
+        // Pre-load sounds
+        for (const sound of Object.values(sounds)) {
+          sound.load();
         }
 
-        function updateTicketStatus(barcode) {
-            fetch('/update-ticket-status', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ barcode })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.message) {
-                        if (data.message === "Unregistered Ticket") {
-                            showUnregisteredMessage();
-                        } else {
-                            playRelevantVideo(data.message);
-                        }
-                    } else {
-                        console.error("Unexpected response:", data);
-                    }
-                })
-                .catch(error => {
-                    console.error("Error updating ticket status:", error);
-                });
-        }
+        return (type) => {
+          const sound = sounds[type];
+          if (sound) {
+            sound.currentTime = 0;
+            sound
+              .play()
+              .catch((err) => console.warn("Sound play failed:", err));
+          }
+        };
+      })();
 
-        function playRelevantVideo(message) {
-            const welcomeVideo = document.getElementById('welcomeVideo');
-            const welcomeBackVideo = document.getElementById('welcomeBackVideo');
-            const thankYouVideo = document.getElementById('thankYouVideo');
+      function processCode(code) {
+        if (!isScanningAllowed || !code) return;
 
-            // Hide all videos initially
-            welcomeVideo.style.display = 'none';
-            welcomeBackVideo.style.display = 'none';
-            thankYouVideo.style.display = 'none';
+        updateTicketStatus(code);
 
-            // Determine which video to play based on the message
-            let videoElement;
-            if (message === "Welcome") {
-                videoElement = welcomeVideo;
-                playSound('success');
-            } else if (message === "Welcome Back") {
-                videoElement = welcomeBackVideo;
-                playSound('success');
-            } else if (message === "Thank You") {
-                videoElement = thankYouVideo;
-                playSound('success');
-            } else {
-                console.error("Unknown message:", message);
+        isScanningAllowed = false;
+        setTimeout(() => {
+          isScanningAllowed = true;
+        }, 3000);
+      }
+
+      function updateTicketStatus(barcode) {
+        fetch("/update-ticket-status", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ barcode }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.message) {
+              if (data.message === "Unregistered Ticket") {
                 showUnregisteredMessage();
-                return;
+              } else {
+                playRelevantVideo(data.message);
+              }
+            } else {
+              console.error("Unexpected response:", data);
             }
+          })
+          .catch((error) => {
+            console.error("Error updating ticket status:", error);
+          });
+      }
 
-            // Show and play the relevant video
-            videoElement.style.display = 'block';
-            videoElement.play()
-                .catch(error => {
-                    console.error("Error playing video:", error);
-                });
+      function playRelevantVideo(message) {
+        const welcomeVideo = document.getElementById("welcomeVideo");
+        const welcomeBackVideo = document.getElementById("welcomeBackVideo");
+        const thankYouVideo = document.getElementById("thankYouVideo");
 
-            // Hide the video after it ends
-            videoElement.onended = () => {
-                videoElement.style.display = 'none';
-            };
+        // Hide all videos initially
+        welcomeVideo.style.display = "none";
+        welcomeBackVideo.style.display = "none";
+        thankYouVideo.style.display = "none";
+
+        // Determine which video to play based on the message
+        let videoElement;
+        if (message === "Welcome") {
+          videoElement = welcomeVideo;
+          playSound("success");
+        } else if (message === "Welcome Back") {
+          videoElement = welcomeBackVideo;
+          playSound("success");
+        } else if (message === "Thank You") {
+          videoElement = thankYouVideo;
+          playSound("success");
+        } else {
+          console.error("Unknown message:", message);
+          showUnregisteredMessage();
+          return;
         }
 
-        function showUnregisteredMessage() {
-            console.log("unregited message");
-            playSound('fail');
-            const messageDiv = document.getElementById('unregisteredMessage');
-            messageDiv.style.display = 'block';
-
-            // Hide the message after 3 seconds
-            setTimeout(() => {
-                messageDiv.style.display = 'none';
-            }, 3000);
-        }
-
-        function submitCode() {
-            const code = document.getElementById('barcodeInput').value;
-            processCode(code);
-            document.getElementById('barcodeInput').value = ''; // Clear input
-        }
-
-        document.getElementById('barcodeInput').addEventListener('keypress', function (event) {
-            if (event.key === 'Enter' && isScanningAllowed) {
-                processCode(this.value);
-                this.value = ''; // Clear input
-                event.preventDefault();
-            }
+        // Show and play the relevant video
+        videoElement.style.display = "block";
+        videoElement.play().catch((error) => {
+          console.error("Error playing video:", error);
         });
-        const mannual = document.getElementById('manual-input-container');
-        // mannual.addEventListener('mousemove', function (event) {
-        //     console.log("on Mouse Move", event.style);
-        // });
-    </script>
-</body>
 
+        videoElement.oncanplaythrough = () => {
+          isScanningAllowed = false;
+          barcodeIn.blur();
+        };
+        videoElement.onplaying = () => {
+          isScanningAllowed = false;
+          barcodeIn.blur();
+        };
+
+        // Hide the video after it ends
+        videoElement.onended = () => {
+          videoElement.style.display = "none";
+          barcodeIn.focus();
+        };
+      }
+
+      function showUnregisteredMessage() {
+        console.log("unregited message");
+        playSound("fail");
+        const messageDiv = document.getElementById("unregisteredMessage");
+        messageDiv.style.display = "block";
+
+        // Hide the message after 3 seconds
+        setTimeout(() => {
+          messageDiv.style.display = "none";
+        }, 3000);
+      }
+
+      function submitCode() {
+        const code = barcodeIn.value;
+        processCode(code);
+        dbarcodeIn.value = ""; // Clear input
+      }
+
+      barcodeIn.addEventListener("keypress", function (event) {
+        if (event.key === "Enter" && isScanningAllowed) {
+          processCode(this.value);
+          this.value = ""; // Clear input
+          event.preventDefault();
+        }
+      });
+      const mannual = document.getElementById("manual-input-container");
+      // mannual.addEventListener('mousemove', function (event) {
+      //     console.log("on Mouse Move", event.style);
+      // });
+    </script>
+  </body>
 </html>
