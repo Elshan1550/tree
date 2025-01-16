@@ -3,12 +3,13 @@ const VIDEO_CACHE = "video-cache-v1";
 
 // Function to cache videos
 async function cacheVideos() {
-  const videoUrls = [
-  new URL("/videos/background_video.mp4"),
-    new URL("/videos/welcome_video.mp4"),
-    new URL("/videos/thank_you_video.mp4)"
-  ];
+  const baseUrl = window.location.origin;
 
+  const videoUrls = [
+    `${baseUrl}/videos/background_video.mp4`,
+    `${baseUrl}/videos/welcome_video.mp4`,
+    `${baseUrl}/videos/thank_you_video.mp4`,
+  ];
   try {
     const cache = await caches.open(VIDEO_CACHE);
 
