@@ -4,9 +4,9 @@ const VIDEO_CACHE = "video-cache-v1";
 // Function to cache videos
 async function cacheVideos() {
   const videoUrls = [
-    "/videos/background_video.mp4",
-    "/videos/welcome_video.mp4",
-    "/videos/thank_you_video.mp4"
+  new URL("/videos/background_video.mp4"),
+    new URL("/videos/welcome_video.mp4"),
+    new URL("/videos/thank_you_video.mp4)"
   ];
 
   try {
