@@ -51,8 +51,12 @@ app.get('/tickets', async (req, res) => {
 app.post('/update-ticket-status', async (req, res) => {
     const { barcode } = req.body;
     try {
+        console.log("barcode - ", barcode);
         const ticket = await Ticket.findOne({ barcode });
+        console.log("ticket - ", ticket);
         if (ticket) {
+
+
             ticket.status = ticket.status === 'In' ? 'Out' : 'In';
             await ticket.save();
             notifyClients(); // Notify on status update
