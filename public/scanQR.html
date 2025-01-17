@@ -239,6 +239,7 @@
 
         // Show and play the relevant video
         videoElement.style.display = "block";
+        videoElement.playbackRate = 1.8;
         videoElement.play().catch((error) => {
           console.error("Error playing video:", error);
         });
@@ -268,7 +269,7 @@
         // Hide the message after 3 seconds
         setTimeout(() => {
           messageDiv.style.display = "none";
-        }, 3000);
+        }, 1200);
       }
 
       function submitCode() {
